@@ -1,0 +1,99 @@
+<section class="recipes">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+          </ul>
+          <div class="search-bar">
+            <form class="form-inline my-2 my-lg-0" >
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" [(ngModel)]="category"  [ngModelOptions]="{standalone: true}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="findByCategory(category)">Search</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+
+    <div style="text-align: center;">
+        <div >
+            <div class="dropdown">
+                <label class="dropdown-toggle" data-toggle="dropdown" >Filter using Calories, Ingredients, Diet Labels</label>
+                <div class="dropdown-menu dropdown-menu-center">
+                    <form #filterform="ngForm" [formGroup]="recipeFilterForm">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>
+                                        From <input type="text" formControlName="from">
+                                    </label>
+                                    <p class="error" *ngIf="this.f.from.errors?.['required']">
+                                        Type atleast one value.
+                                    </p>
+                                </div>
+                                <div class="from-group">
+                                    <label>
+                                        To <input type="text" formControlName="to">
+                                    </label>
+                                    <p class="error" *ngIf="this.f.to.errors?.['required']">
+                                        Type atleast one value.                  
+                                    </p>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        Ingredients Upto 
+                                        <input type="text" formControlName="ingredients">
+                                    </label>
+                                    <p class="error" *ngIf="this.f.ingredients.errors?.['required']">
+                                        Type atleast one value.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div *ngFor="let data of Data; let i=index">
+                                    <label>
+                                      <input type="checkbox" [value]="data.value" (change)="onDietLabelChange($event)" />
+                                      {{data.name}}
+                                    </label>
+                                  </div>
+                                  <p class="error" *ngIf="this.recipeFilterForm.controls['dietLabelArray'].errors?.['required']">
+                                      Checkbox is required, select atleast one value.
+                                  </p>
+                            </div>
+                        </div>
+                        <input type="submit" value="Submit" (click)="onSubmitDietForm()">
+                        <button (click)="unCheckAll()">Clear</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col" *ngFor="let r of categoricalData.hits;">
+                <div class="card" (click)="openRecipeDetails(r.recipe.uri.split('#recipe_').pop())" >
+                    <img class="card-img-top" src="{{r.recipe.image}}" alt="Recipe image">
+                    <div class="card-body">
+                        <h5 class="card-title">{{r.recipe.label | json | uppercase}}</h5>
+                        <p class="card-text">{{r.recipe.calories | number}} Calories | {{r.recipe.ingredients.length | number}} Ingredients</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted"> </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

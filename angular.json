@@ -70,6 +70,9 @@
               "browserTarget": "recipe-app:build:development"
             }
           },
+          "options": {
+            "browserTarget": "recipe-app:build"
+        },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
@@ -97,5 +100,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
